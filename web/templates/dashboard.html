@@ -298,8 +298,248 @@
             </div>
 
         </section>
+<!-- =================================================
+     SENTINEL SECURITY LOOP
+================================================== -->
+
+<section class="security-loop">
+
+    <div class="loop-heading">
+
+        <div class="overline">
+            HOW SENTINEL WORKS
+        </div>
+
+        <h2>
+            Watch. Learn. Detect. Respond.
+        </h2>
+
+        <p>
+            Sentinel continuously compares sensitive-data behavior
+            against what normally happens inside the application.
+        </p>
+
+    </div>
 
 
+    <div class="loop-grid">
+
+        <div class="loop-card">
+
+            <span class="loop-number">01</span>
+
+            <div class="loop-icon">◉</div>
+
+            <strong>WATCH</strong>
+
+            <p>
+                Monitor sensitive data as it is accessed and used.
+            </p>
+
+        </div>
+
+
+        <div class="loop-connector"></div>
+
+
+        <div class="loop-card">
+
+            <span class="loop-number">02</span>
+
+            <div class="loop-icon">⌁</div>
+
+            <strong>LEARN</strong>
+
+            <p>
+                Establish the normal behavioral lifecycle.
+            </p>
+
+        </div>
+
+
+        <div class="loop-connector"></div>
+
+
+        <div class="loop-card">
+
+            <span class="loop-number">03</span>
+
+            <div class="loop-icon">!</div>
+
+            <strong>DETECT</strong>
+
+            <p>
+                Identify behavior that significantly deviates.
+            </p>
+
+        </div>
+
+
+        <div class="loop-connector"></div>
+
+
+        <div class="loop-card">
+
+            <span class="loop-number">04</span>
+
+            <div class="loop-icon">✓</div>
+
+            <strong>RESPOND</strong>
+
+            <p>
+                Automatically release risky sensitive data.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- =================================================
+     LIVE SECURITY ACTIVITY
+================================================== -->
+
+<section class="activity-section">
+
+    <div class="section-intro compact">
+
+        <div class="section-number">
+            LIVE
+        </div>
+
+        <div>
+
+            <div class="overline">
+                RUNTIME ACTIVITY
+            </div>
+
+            <h2>
+                Security activity.
+            </h2>
+
+            <p>
+                Recent observations from Sentinel's behavioral engine.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="activity-panel">
+
+        <div class="activity-header">
+
+            <div>
+                <strong>
+                    EVENT STREAM
+                </strong>
+
+                <span>
+                    Behavioral monitoring
+                </span>
+            </div>
+
+            <div class="activity-online">
+                <span></span>
+                MONITORING
+            </div>
+
+        </div>
+
+
+        <div class="activity-list">
+
+            {% for event in events|default([]) %}
+
+            <div class="activity-row">
+
+                <span class="activity-time">
+                    {{ event.time }}
+                </span>
+
+
+                <div class="activity-object">
+
+                    <strong>
+                        {{ event.name }}
+                    </strong>
+
+                    <span>
+                        {{ event.category }}
+                    </span>
+
+                </div>
+
+
+                <span class="activity-type">
+
+                    {% if event.status == "NORMAL" %}
+                        ACCESS
+                    {% else %}
+                        RETENTION
+                    {% endif %}
+
+                </span>
+
+
+                <span class="
+                    activity-status
+                    {% if event.status == 'NORMAL' %}
+                        activity-normal
+                    {% else %}
+                        activity-anomaly
+                    {% endif %}
+                ">
+
+                    {% if event.status == "NORMAL" %}
+
+                        NORMAL
+
+                    {% else %}
+
+                        HIGHLY UNUSUAL
+
+                    {% endif %}
+
+                </span>
+
+
+                <span class="activity-result">
+
+                    {% if event.remediation %}
+
+                        ✓ MITIGATED
+
+                    {% elif event.status == "NORMAL" %}
+
+                        —
+
+                    {% else %}
+
+                        DETECTED
+
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+            {% else %}
+
+            <div class="activity-empty">
+
+                No security events recorded yet.
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
 
         <!-- =================================================
              SECURITY EVENT
@@ -846,79 +1086,310 @@
                 </div>
 
 
-                <div class="analyst-content">
+                    <div class="analysis-block">
 
-                    {% if result.status == 'NORMAL' %}
+        <span class="analysis-label">
+            THREAT SUMMARY
+        </span>
 
-                        <p>
-                            <strong>
-                                No abnormal retention detected.
-                            </strong>
-                        </p>
+        <p>
+            {{ analysis.summary }}
+        </p>
 
-                        <p>
-                            The observed lifecycle remains consistent
-                            with the learned behavioral baseline.
-                            No remediation action is required.
-                        </p>
+    </div>
 
-                    {% else %}
 
-                        <p>
-                            <strong>
-                                Sentinel detected abnormal credential retention.
-                            </strong>
-                        </p>
+    <div class="analysis-block">
 
-                        <p>
-                            <strong>{{ result.name }}</strong>
-                            remained active for
-                            <strong>{{ result.idle_time }} seconds</strong>
-                            after its last observed use, while the
-                            learned baseline is approximately
-                            <strong>{{ result.normal_idle }} seconds</strong>.
-                        </p>
+        <span class="analysis-label">
+            WHY IT WAS FLAGGED
+        </span>
 
-                        <p>
-                            This difference caused the behavioral engine
-                            to classify the event as
-                            <strong>{{ result.status }}</strong>.
-                        </p>
+        <p>
+            {{ analysis.why_flagged }}
+        </p>
 
-                        {% if result.remediation %}
+    </div>
 
-                            <div class="analyst-result">
 
-                                <span class="result-check">
-                                    ✓
-                                </span>
+    <div class="analysis-block">
 
-                                <div>
+        <span class="analysis-label">
+            ACTION TAKEN
+        </span>
 
-                                    <strong>
-                                        Remediation completed
-                                    </strong>
+        <p>
+            {{ analysis.action }}
+        </p>
 
-                                    <span>
-                                        {{ result.remediation.target }}
-                                        was released and marked inactive.
-                                    </span>
+    </div>
 
-                                </div>
 
-                            </div>
+    <div class="analysis-block">
 
-                        {% endif %}
+        <span class="analysis-label">
+            VERIFICATION
+        </span>
 
-                    {% endif %}
+        <p>
+            {{ analysis.verification }}
+        </p>
 
-                </div>
+    </div>
+<div class="analysis-evidence">
+
+    <div class="evidence-item">
+
+        <span>
+            OBSERVED
+        </span>
+
+        <strong>
+            {{ analysis.evidence.observed }}
+        </strong>
+
+    </div>
+
+
+    <div class="evidence-item">
+
+        <span>
+            LEARNED NORMAL
+        </span>
+
+        <strong>
+            {{ analysis.evidence.baseline }}
+        </strong>
+
+    </div>
+
+
+    <div class="evidence-item">
+
+        <span>
+            DEVIATION
+        </span>
+
+        <strong class="evidence-warning">
+            {{ analysis.evidence.deviation }}
+        </strong>
+
+    </div>
+
+
+    <div class="evidence-item">
+
+        <span>
+            ENGINE RESULT
+        </span>
+
+        <strong class="evidence-success">
+            {{ analysis.evidence.result }}
+        </strong>
+
+    </div>
+
+</div>
+
+    <div class="analysis-assessment">
+
+        <span class="analysis-label">
+            ANALYST ASSESSMENT
+        </span>
+
+        <p>
+            {{ analysis.assessment }}
+        </p>
+
+    </div>
 
             </div>
 
         </section>
 
+<!-- =================================================
+     RESPONSE CENTER
+================================================== -->
 
+<section class="response-section">
+
+    <div class="section-intro">
+
+        <div class="section-number">
+            04
+        </div>
+
+        <div>
+
+            <div class="overline">
+                RESPONSE CENTER
+            </div>
+
+            <h2>
+                What should happen next?
+            </h2>
+
+            <p>
+                Sentinel translates the security event into
+                a clear operational response.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="response-grid">
+
+
+        <!-- EVENT -->
+
+        <article class="response-card">
+
+            <span class="response-number">
+                01
+            </span>
+
+            <div class="response-icon">
+                !
+            </div>
+
+            <div class="response-label">
+                EVENT
+            </div>
+
+            <h3>
+                {{ result.status }}
+            </h3>
+
+            <p>
+                Sentinel detected behavior outside the
+                learned lifecycle for this credential.
+            </p>
+
+        </article>
+
+
+        <!-- ACTION -->
+
+        <article class="response-card">
+
+            <span class="response-number">
+                02
+            </span>
+
+            <div class="response-icon">
+                →
+            </div>
+
+            <div class="response-label">
+                ACTION
+            </div>
+
+            <h3>
+
+                {% if result.remediation %}
+                    RELEASED
+                {% else %}
+                    MONITORING
+                {% endif %}
+
+            </h3>
+
+            <p>
+
+                {% if result.remediation %}
+
+                    The sensitive credential was released
+                    automatically.
+
+                {% else %}
+
+                    No remediation was required.
+
+                {% endif %}
+
+            </p>
+
+        </article>
+
+
+        <!-- VERIFY -->
+
+        <article class="response-card">
+
+            <span class="response-number">
+                03
+            </span>
+
+            <div class="response-icon">
+                ✓
+            </div>
+
+            <div class="response-label">
+                VERIFICATION
+            </div>
+
+            <h3>
+
+                {% if result.remediation %}
+                    MITIGATED
+                {% else %}
+                    NORMAL
+                {% endif %}
+
+            </h3>
+
+            <p>
+
+                {% if result.remediation %}
+
+                    The credential is no longer active.
+
+                {% else %}
+
+                    The application remains within its
+                    expected behavioral baseline.
+
+                {% endif %}
+
+            </p>
+
+        </article>
+
+
+    </div>
+
+
+    <!-- NEXT STEP -->
+
+    <div class="next-step">
+
+        <div>
+
+            <span class="response-label">
+                RECOMMENDED NEXT STEP
+            </span>
+
+            <p>
+                {{ analysis.next_step }}
+            </p>
+
+        </div>
+
+        <div class="next-step-status">
+
+            {% if result.remediation %}
+                INCIDENT MITIGATED
+            {% else %}
+                NO ACTION REQUIRED
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</section>
 
         <!-- =================================================
              HOW IT WORKS

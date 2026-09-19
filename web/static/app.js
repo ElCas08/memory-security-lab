@@ -64,13 +64,19 @@ function startSecuritySimulation(form) {
                         Security investigation
                     </h3>
 
+                    <p class="simulation-subtitle">
+                        Sentinel is observing the sensitive-data lifecycle
+                        in real time.
+                    </p>
+
                 </div>
 
                 <span class="simulation-live">
-                    LIVE
+                    ● LIVE
                 </span>
 
             </div>
+
 
             <div class="simulation-progress">
 
@@ -78,6 +84,14 @@ function startSecuritySimulation(form) {
                     class="simulation-progress-bar"
                     id="simulationProgressBar"
                 ></div>
+
+            </div>
+
+
+            <div class="simulation-stage"
+                 id="simulationStage">
+
+                INITIALIZING SECURITY ENGINE
 
             </div>
 
@@ -117,7 +131,7 @@ function startSecuritySimulation(form) {
                 ${createStep(
                     "06",
                     "REMEDIATE",
-                    "Applying sensitive-data response"
+                    "Preparing security response"
                 )}
 
                 ${createStep(
@@ -150,13 +164,42 @@ function startSecuritySimulation(form) {
 
 
     const steps = [
-        "Credential access observed",
-        "Baseline loaded",
-        "Retention measurement active",
-        "Behavioral comparison running",
-        "Risk classification complete",
-        "Remediation executed",
-        "Security state verified"
+
+        {
+            message: "Credential access observed",
+            stage: "OBSERVING APPLICATION ACTIVITY"
+        },
+
+        {
+            message: "Behavioral baseline loaded",
+            stage: "LEARNING EXPECTED BEHAVIOR"
+        },
+
+        {
+            message: "Measuring credential retention",
+            stage: "MONITORING SENSITIVE DATA"
+        },
+
+        {
+            message: "Comparing current behavior with baseline",
+            stage: "ANALYZING BEHAVIOR"
+        },
+
+        {
+            message: "Risk classification complete",
+            stage: "EVALUATING SECURITY RISK"
+        },
+
+        {
+            message: "Security response prepared",
+            stage: "RESPONDING TO DETECTED RISK"
+        },
+
+        {
+            message: "Final security state verified",
+            stage: "VERIFYING REMEDIATION"
+        }
+
     ];
 
 
@@ -170,8 +213,13 @@ function startSecuritySimulation(form) {
             "simulationMessage"
         );
 
+    const stage =
+        document.getElementById(
+            "simulationStage"
+        );
 
-    steps.forEach((text, index) => {
+
+    steps.forEach((item, index) => {
 
         setTimeout(() => {
 
@@ -181,6 +229,39 @@ function startSecuritySimulation(form) {
                 document.querySelector(
                     `.simulation-step[data-step="${stepNumber}"]`
                 );
+
+
+            /*
+             * Mark previous steps complete.
+             */
+
+            document
+                .querySelectorAll(".simulation-step")
+                .forEach((currentStep, currentIndex) => {
+
+                    if (currentIndex < index) {
+
+                        currentStep.classList.remove("active");
+
+                        currentStep.classList.add("complete");
+
+                        const status =
+                            currentStep.querySelector(
+                                ".step-status"
+                            );
+
+                        if (status) {
+                            status.textContent = "✓";
+                        }
+
+                    }
+
+                });
+
+
+            /*
+             * Activate current step.
+             */
 
             if (step) {
 
@@ -192,28 +273,16 @@ function startSecuritySimulation(form) {
                     );
 
                 if (description) {
-                    description.textContent = text;
+                    description.textContent =
+                        item.message;
                 }
-
-                setTimeout(() => {
-
-                    step.classList.remove("active");
-
-                    step.classList.add("complete");
-
-                    const status =
-                        step.querySelector(
-                            ".step-status"
-                        );
-
-                    if (status) {
-                        status.textContent = "✓";
-                    }
-
-                }, 650);
 
             }
 
+
+            /*
+             * Update progress.
+             */
 
             if (progressBar) {
 
@@ -223,27 +292,98 @@ function startSecuritySimulation(form) {
             }
 
 
-            if (message) {
+            /*
+             * Update main stage.
+             */
 
-                message.textContent = text;
+            if (stage) {
+
+                stage.classList.remove(
+                    "stage-pulse"
+                );
+
+                void stage.offsetWidth;
+
+                stage.classList.add(
+                    "stage-pulse"
+                );
+
+                stage.textContent =
+                    item.stage;
 
             }
 
-        }, index * 900);
+
+            /*
+             * Update footer message.
+             */
+
+            if (message) {
+
+                message.textContent =
+                    item.message;
+
+            }
+
+        }, index * 950);
 
     });
 
 
     /*
-     * Let the visual investigation finish,
-     * then actually submit the Flask form.
+     * Complete the final step.
+     */
+
+    setTimeout(() => {
+
+        document
+            .querySelectorAll(".simulation-step")
+            .forEach((step) => {
+
+                step.classList.remove("active");
+
+                step.classList.add("complete");
+
+                const status =
+                    step.querySelector(
+                        ".step-status"
+                    );
+
+                if (status) {
+                    status.textContent = "✓";
+                }
+
+            });
+
+
+        if (stage) {
+
+            stage.textContent =
+                "SECURITY INVESTIGATION COMPLETE";
+
+        }
+
+
+        if (message) {
+
+            message.textContent =
+                "Redirecting to security results...";
+
+        }
+
+    }, steps.length * 950);
+
+
+    /*
+     * Submit to Flask after the visual
+     * investigation has completed.
      */
 
     setTimeout(() => {
 
         form.submit();
 
-    }, steps.length * 900 + 500);
+    }, steps.length * 950 + 700);
 
 }
 
@@ -254,7 +394,7 @@ function createStep(number, title, description) {
 
         <div
             class="simulation-step"
-            data-step="${number.replace("0", "")}"
+            data-step="${parseInt(number, 10)}"
         >
 
             <span class="step-number">
