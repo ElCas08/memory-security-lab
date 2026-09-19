@@ -3,7 +3,7 @@ import time
 from baseline import Baseline
 from memory_monitor import SensitiveDataMonitor
 from anomaly import AnomalyDetector
-
+from remediation import RemediationEngine
 
 def run_security_check(anomalous=True):
 
@@ -13,6 +13,7 @@ def run_security_check(anomalous=True):
 
     # Create security monitor
     monitor = SensitiveDataMonitor()
+    remediation = RemediationEngine(monitor)
 
     # Create anomaly detector
     detector = AnomalyDetector(baseline)
@@ -57,6 +58,12 @@ def run_security_check(anomalous=True):
         "credential",
         idle_time
     )
+    remediation_result = None
+
+    if status == "HIGHLY_UNUSUAL":
+        remediation_result = remediation.release_sensitive_data(
+        "api_key"
+         )
 
     normal_idle = baseline.average_idle_time(
         "credential"
@@ -67,9 +74,8 @@ def run_security_check(anomalous=True):
         "category": "credential",
         "idle_time": round(idle_time, 2),
         "normal_idle": round(normal_idle, 4),
-        "status": status
-    }
-
+        "status": status,
+        "remediation": remediation_result}
 
 if __name__ == "__main__":
 

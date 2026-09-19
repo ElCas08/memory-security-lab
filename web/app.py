@@ -7,7 +7,7 @@ sys.path.append(
     )
 )
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from security_engine import run_security_check
 
 
@@ -17,7 +17,33 @@ app = Flask(__name__)
 @app.route("/")
 def dashboard():
 
-    result = run_security_check()
+    # Default: show anomaly result
+    result = run_security_check(
+        anomalous=True
+    )
+
+    return render_template(
+        "dashboard.html",
+        result=result
+    )
+
+
+@app.route("/test", methods=["POST"])
+def test():
+
+    test_type = request.form.get("type")
+
+    if test_type == "normal":
+
+        result = run_security_check(
+            anomalous=False
+        )
+
+    else:
+
+        result = run_security_check(
+            anomalous=True
+        )
 
     return render_template(
         "dashboard.html",

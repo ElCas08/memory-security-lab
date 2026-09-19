@@ -1,185 +1,448 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-    <title>Memory Security Monitor</title>
+    <meta charset="UTF-8">
 
-    <style>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #0f172a;
-            color: white;
-            margin: 0;
-            padding: 40px;
-        }
+    <title>Sentinel — Memory Security Monitor</title>
 
-        .container {
-            max-width: 900px;
-            margin: auto;
-        }
-
-        h1 {
-            margin-bottom: 5px;
-        }
-
-        .subtitle {
-            color: #94a3b8;
-            margin-bottom: 35px;
-        }
-
-        .status {
-            padding: 15px;
-            background: #172033;
-            border-radius: 10px;
-            margin-bottom: 25px;
-        }
-
-        .card {
-            background: #172033;
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid #334155;
-        }
-
-        .warning {
-            color: #fbbf24;
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        .row {
-            display: flex;
-            justify-content: space-between;
-            padding: 14px 0;
-            border-bottom: 1px solid #334155;
-        }
-
-        .label {
-            color: #94a3b8;
-        }
-
-        .value {
-            font-weight: bold;
-        }
-
-        .explanation {
-            margin-top: 25px;
-            padding: 18px;
-            background: #1e293b;
-            border-radius: 10px;
-            color: #cbd5e1;
-        }
-
-    </style>
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
 
 </head>
 
 
 <body>
 
-<div class="container">
+    <div class="app-shell">
 
-    <h1>Memory Security Monitor</h1>
+        <!-- SIDEBAR -->
 
-    <div class="subtitle">
-        Behavioral monitoring of sensitive application data
+        <aside class="sidebar">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    ◈
+                </div>
+
+                <div>
+                    <h1>Sentinel</h1>
+                    <p>Memory Security</p>
+                </div>
+
+            </div>
+
+
+            <nav>
+
+                <a class="nav-item active">
+                    <span>◉</span>
+                    Overview
+                </a>
+
+                <a class="nav-item" href="#behavior">
+                    <span>◌</span>
+                    Behavioral Analysis
+                </a>
+
+                <a class="nav-item" href="#sensitive">
+                    <span>◌</span>
+                    Sensitive Data
+                </a>
+
+            </nav>
+
+
+            <div class="sidebar-footer">
+
+                <div class="system-indicator">
+                    <span></span>
+                    System online
+                </div>
+
+                <small>
+                    Behavioral monitoring engine
+                </small>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+
+        <main class="main-content">
+
+
+            <!-- TOP BAR -->
+
+            <header class="topbar">
+
+                <div>
+
+                    <p class="eyebrow">
+                        SECURITY CONSOLE
+                    </p>
+
+                    <h2>
+                        Memory Behavior
+                    </h2>
+
+                </div>
+
+
+                <div class="monitoring-pill">
+
+                    <span></span>
+
+                    Monitoring application
+
+                </div>
+
+            </header>
+
+
+            <!-- STATUS -->
+
+            <section class="hero-card
+                {% if result.status == 'NORMAL' %}
+                    normal
+                {% else %}
+                    danger
+                {% endif %}
+            ">
+
+                <div class="hero-left">
+
+                    <div class="status-icon">
+
+                        {% if result.status == 'NORMAL' %}
+                            ✓
+                        {% else %}
+                            !
+                        {% endif %}
+
+                    </div>
+
+                    <div>
+
+                        <p class="eyebrow">
+                            CURRENT SECURITY STATUS
+                        </p>
+
+                        <h3>
+                            {{ result.status }}
+                        </h3>
+
+                        {% if result.status == 'NORMAL' %}
+
+                            <p>
+                                Sensitive data is behaving
+                                within its learned pattern.
+                            </p>
+
+                        {% else %}
+
+                            <p>
+                                Sensitive data remains active
+                                beyond its learned behavioral baseline.
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- METRICS -->
+
+            <section class="metrics-grid" id="sensitive">
+
+
+                <div class="metric-card">
+
+                    <p>
+                        SENSITIVE DATA
+                    </p>
+
+                    <h3>
+                        {{ result.name }}
+                    </h3>
+
+                    <span>
+                        {{ result.category }}
+                    </span>
+
+                </div>
+
+
+                <div class="metric-card">
+
+                    <p>
+                        CURRENT IDLE
+                    </p>
+
+                    <h3>
+                        {{ result.idle_time }}<small>s</small>
+                    </h3>
+
+                    <span>
+                        Since last access
+                    </span>
+
+                </div>
+
+
+                <div class="metric-card">
+
+                    <p>
+                        LEARNED BASELINE
+                    </p>
+
+                    <h3>
+                        {{ result.normal_idle }}<small>s</small>
+                    </h3>
+
+                    <span>
+                        Expected behavior
+                    </span>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- ANALYSIS -->
+
+            <section class="panel" id="behavior">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <p class="eyebrow">
+                            BEHAVIORAL ANALYSIS
+                        </p>
+
+                        <h3>
+                            Sensitive data lifecycle
+                        </h3>
+
+                    </div>
+
+                    <span class="category-badge">
+                        {{ result.category }}
+                    </span>
+
+                </div>
+
+
+                <div class="timeline">
+
+                    <div class="timeline-line"></div>
+
+
+                    <div class="timeline-event">
+
+                        <div class="timeline-dot complete">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Credential accessed
+                            </strong>
+
+                            <span>
+                                Application used {{ result.name }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-event">
+
+                        <div class="timeline-dot
+                            {% if result.status == 'NORMAL' %}
+                                complete
+                            {% else %}
+                                warning
+                            {% endif %}
+                        ">
+
+                            {% if result.status == 'NORMAL' %}
+                                ✓
+                            {% else %}
+                                !
+                            {% endif %}
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Credential lifecycle
+                            </strong>
+
+                            <span>
+
+                                {% if result.status == 'NORMAL' %}
+
+                                    Released within normal behavior
+
+                                {% else %}
+
+                                    Still active after last use
+
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- TEST CONTROLS -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <p class="eyebrow">
+                            SIMULATION
+                        </p>
+
+                        <h3>
+                            Test application behavior
+                        </h3>
+
+                    </div>
+
+                    <span class="live-badge">
+                        LIVE
+                    </span>
+
+                </div>
+
+
+                <div class="test-grid">
+
+
+                    <form
+                        action="/test"
+                        method="POST"
+                    >
+
+                        <input
+                            type="hidden"
+                            name="type"
+                            value="normal"
+                        >
+
+                        <button
+                            class="test-button normal-button"
+                            type="submit"
+                        >
+
+                            <span class="button-icon">
+                                ✓
+                            </span>
+
+                            <span>
+
+                                <strong>
+                                    Normal behavior
+                                </strong>
+
+                                <small>
+                                    Release credential immediately
+                                </small>
+
+                            </span>
+
+                        </button>
+
+                    </form>
+
+
+                    <form
+                        action="/test"
+                        method="POST"
+                    >
+
+                        <input
+                            type="hidden"
+                            name="type"
+                            value="anomaly"
+                        >
+
+                        <button
+                            class="test-button anomaly-button"
+                            type="submit"
+                        >
+
+                            <span class="button-icon">
+                                !
+                            </span>
+
+                            <span>
+
+                                <strong>
+                                    Simulate anomaly
+                                </strong>
+
+                                <small>
+                                    Retain credential after use
+                                </small>
+
+                            </span>
+
+                        </button>
+
+                    </form>
+
+
+                </div>
+
+            </section>
+
+
+            <footer>
+
+                Sentinel Behavioral Security Engine
+                <span>•</span>
+                Prototype
+
+            </footer>
+
+
+        </main>
+
     </div>
-
-
-    <div class="status">
-
-        ● Monitoring application
-
-    </div>
-
-
-    <div class="card">
-
-        <div class="warning">
-            ⚠ {{ result.status }}
-        </div>
-
-        <br>
-
-
-        <div class="row">
-
-            <span class="label">
-                Sensitive data
-            </span>
-
-            <span class="value">
-                {{ result.name }}
-            </span>
-
-        </div>
-
-
-        <div class="row">
-
-            <span class="label">
-                Category
-            </span>
-
-            <span class="value">
-                {{ result.category }}
-            </span>
-
-        </div>
-
-
-        <div class="row">
-
-            <span class="label">
-                Current idle time
-            </span>
-
-            <span class="value">
-                {{ result.idle_time }} seconds
-            </span>
-
-        </div>
-
-
-        <div class="row">
-
-            <span class="label">
-                Learned normal
-            </span>
-
-            <span class="value">
-                ~{{ result.normal_idle }} seconds
-            </span>
-
-        </div>
-
-
-        <div class="row">
-
-            <span class="label">
-                Detection
-            </span>
-
-            <span class="value">
-                Behavioral anomaly
-            </span>
-
-        </div>
-
-
-        <div class="explanation">
-
-            The application has stopped using this credential,
-            but the sensitive data remains active significantly
-            longer than its learned normal behavior.
-
-        </div>
-
-    </div>
-
-</div>
 
 </body>
 
