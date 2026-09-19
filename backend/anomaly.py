@@ -3,23 +3,29 @@ class AnomalyDetector:
     def __init__(self, baseline):
         self.baseline = baseline
 
-    def deviation(self, category, current_duration):
+    def idle_deviation(self, category, current_idle):
 
-        normal = self.baseline.average(category)
+        normal = self.baseline.average_idle_time(category)
 
         if normal is None:
             return None
 
-        if normal == 0:
-            return 0
+        # Normal behavior is approximately zero idle time.
+        # In that case, any meaningful idle period is unusual.
+        if normal < 0.001:
 
-        return abs(current_duration - normal) / normal
+            if current_idle < 1:
+                return 0
 
-    def classify(self, category, current_duration):
+            return current_idle
 
-        deviation = self.deviation(
+        return abs(current_idle - normal) / normal
+
+    def classify_idle(self, category, current_idle):
+
+        deviation = self.idle_deviation(
             category,
-            current_duration
+            current_idle
         )
 
         if deviation is None:
