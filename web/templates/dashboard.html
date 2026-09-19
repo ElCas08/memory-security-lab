@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Memory Security Monitor</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 35px;
+        }
+
+        .status {
+            padding: 15px;
+            background: #172033;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: #172033;
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #334155;
+        }
+
+        .warning {
+            color: #fbbf24;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid #334155;
+        }
+
+        .label {
+            color: #94a3b8;
+        }
+
+        .value {
+            font-weight: bold;
+        }
+
+        .explanation {
+            margin-top: 25px;
+            padding: 18px;
+            background: #1e293b;
+            border-radius: 10px;
+            color: #cbd5e1;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <h1>Memory Security Monitor</h1>
+
+    <div class="subtitle">
+        Behavioral monitoring of sensitive application data
+    </div>
+
+
+    <div class="status">
+
+        ● Monitoring application
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="warning">
+            ⚠ {{ result.status }}
+        </div>
+
+        <br>
+
+
+        <div class="row">
+
+            <span class="label">
+                Sensitive data
+            </span>
+
+            <span class="value">
+                {{ result.name }}
+            </span>
+
+        </div>
+
+
+        <div class="row">
+
+            <span class="label">
+                Category
+            </span>
+
+            <span class="value">
+                {{ result.category }}
+            </span>
+
+        </div>
+
+
+        <div class="row">
+
+            <span class="label">
+                Current idle time
+            </span>
+
+            <span class="value">
+                {{ result.idle_time }} seconds
+            </span>
+
+        </div>
+
+
+        <div class="row">
+
+            <span class="label">
+                Learned normal
+            </span>
+
+            <span class="value">
+                ~{{ result.normal_idle }} seconds
+            </span>
+
+        </div>
+
+
+        <div class="row">
+
+            <span class="label">
+                Risk
+            </span>
+
+            <span class="value">
+                {{ result.risk }}
+            </span>
+
+        </div>
+
+
+        <div class="explanation">
+
+            The application has stopped using this credential,
+            but the sensitive data remains active significantly
+            longer than its learned normal behavior.
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
