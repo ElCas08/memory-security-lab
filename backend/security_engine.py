@@ -5,16 +5,16 @@ from memory_monitor import SensitiveDataMonitor
 from anomaly import AnomalyDetector
 
 
-def run_security_check():
+def run_security_check(anomalous=True):
 
-    # Load what the application normally does
+    # Load learned normal behavior
     baseline = Baseline()
     baseline.load()
 
-    # Create our security monitor
+    # Create security monitor
     monitor = SensitiveDataMonitor()
 
-    # Create detector using the learned baseline
+    # Create anomaly detector
     detector = AnomalyDetector(baseline)
 
     # Track sensitive data
@@ -23,22 +23,36 @@ def run_security_check():
         "credential"
     )
 
-    # Simulate the application using it
+    # Application uses the API key
     monitor.access("api_key")
 
-    # Simulate suspicious retention
-    time.sleep(8)
+    if anomalous:
 
-    # Get information about the tracked data
+        # Simulate suspicious retention
+        time.sleep(8)
+
+    else:
+
+        # Normal behavior:
+        # release immediately after use
+        monitor.release("api_key")
+
+    # Get current information
     item = monitor.report()[0]
 
-    # Calculate how long it has been idle
-    idle_time = (
-        time.time()
-        - item["last_accessed"].timestamp()
-    )
+    # Calculate idle time
+    if item["last_accessed"] is not None:
 
-    # Ask our detector what it thinks
+        idle_time = (
+            time.time()
+            - item["last_accessed"].timestamp()
+        )
+
+    else:
+
+        idle_time = 0
+
+    # Detect behavior
     status = detector.classify_idle(
         "credential",
         idle_time
@@ -56,12 +70,26 @@ def run_security_check():
         "status": status
     }
 
+
 if __name__ == "__main__":
 
-    result = run_security_check()
+    print("\nNORMAL TEST")
+    print("-----------")
 
-    print("\nSECURITY ENGINE RESULT")
-    print("----------------------")
+    result = run_security_check(
+        anomalous=False
+    )
+
+    for key, value in result.items():
+        print(f"{key}: {value}")
+
+
+    print("\nANOMALY TEST")
+    print("------------")
+
+    result = run_security_check(
+        anomalous=True
+    )
 
     for key, value in result.items():
         print(f"{key}: {value}")
