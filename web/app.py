@@ -8,7 +8,7 @@ sys.path.append(
     )
 )
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from security_engine import run_security_check
 from security_analyst import SecurityAnalyst
 
@@ -55,7 +55,7 @@ def dashboard():
         events=event_history
     )
 
-@app.route("/test", methods=["POST"])
+@app.route("/test", methods=["GET","POST"])
 def test():
 
     test_type = request.form.get("type")
