@@ -30,7 +30,7 @@ def run_security_check(anomalous=True):
     if anomalous:
 
         # Simulate suspicious retention
-        time.sleep(8)
+        time.sleep(4)
 
     else:
 
