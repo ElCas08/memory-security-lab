@@ -9,7 +9,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Sentinel — Runtime Security</title>
+    <title>Vigilio — Behavioral Runtime Security</title>
 
     <link
         rel="stylesheet"
@@ -33,17 +33,17 @@
         <a class="identity" href="#top">
 
             <span class="identity-mark">
-                S
+                V
             </span>
 
             <span>
 
                 <strong>
-                    SENTINEL
+                    VIGILIO
                 </strong>
 
                 <small>
-                    RUNTIME SECURITY
+                    BEHAVIORAL RUNTIME SECURITY
                 </small>
 
             </span>
@@ -100,57 +100,109 @@
 
                 <p class="hero-description">
 
-                    Sentinel learns how sensitive application data
-                    normally behaves, detects abnormal retention,
-                    and responds before unnecessary exposure becomes
-                    a security event.
+                    VIGILIO watches sensitive data while your application runs,
+                    learns what normal usage looks like, and detects when data
+                    stays active longer than it should. When behavior becomes
+                    unusual, VIGILIO explains the risk and responds automatically.
 
                 </p>
 
 
                 <div class="hero-actions">
 
-                    <form
-                        action="/test"
-                        method="POST"
-                    >
+    <div class="simulation-controls">
 
-                        <input
-                            type="hidden"
-                            name="type"
-                            value="anomaly"
-                        >
+        <form
+            action="/test"
+            method="POST"
+            class="simulation-form"
+        >
 
-                        <button
-                            type="submit"
-                            class="primary-button"
-                        >
+            <input
+                type="hidden"
+                name="type"
+                value="normal"
+            >
 
-                            <span>
-                                RUN SECURITY SIMULATION
-                            </span>
+            <button
+                type="submit"
+                class="secondary-button simulation-choice"
+            >
+                <span>
+                    NORMAL BEHAVIOR
+                </span>
 
-                            <b>
-                                →
-                            </b>
+                <b>
+                    →
+                </b>
+            </button>
 
-                        </button>
-
-                    </form>
+        </form>
 
 
-                    <a
-                        href="#how"
-                        class="secondary-button"
-                    >
+        <form
+            action="/test"
+            method="POST"
+            class="simulation-form"
+        >
 
-                        How Sentinel works
+            <input
+                type="hidden"
+                name="type"
+                value="anomaly"
+            >
 
-                    </a>
+            <button
+                type="submit"
+                class="primary-button simulation-choice"
+            >
+                <span>
+                    SIMULATE ANOMALY
+                </span>
 
-                </div>
+                <b>
+                    →
+                </b>
+            </button>
 
-            </div>
+        </form>
+
+    </div>
+
+
+    <a
+        href="#how"
+        class="secondary-button"
+    >
+        How Vigilio works
+    </a>
+
+</div>
+
+
+<div class="simulation-note">
+
+    <span>
+        NORMAL
+        <strong>Released after use</strong>
+    </span>
+
+    <span>
+        ANOMALY
+        <strong>Unusual retention → remediation</strong>
+    </span>
+
+</div>
+
+
+<div class="hero-hint">
+
+    <span class="hero-hint-dot"></span>
+
+    LIVE BEHAVIORAL MONITORING
+
+</div>
+</div>
 
 
             <!-- LIVE STATE -->
@@ -299,7 +351,7 @@
 
         </section>
 <!-- =================================================
-     SENTINEL SECURITY LOOP
+     VIGILIO SECURITY LOOP
 ================================================== -->
 
 <section class="security-loop">
@@ -307,7 +359,7 @@
     <div class="loop-heading">
 
         <div class="overline">
-            HOW SENTINEL WORKS
+            HOW VIGILIO WORKS
         </div>
 
         <h2>
@@ -315,7 +367,7 @@
         </h2>
 
         <p>
-            Sentinel continuously compares sensitive-data behavior
+            Vigilio continuously compares sensitive-data behavior
             against what normally happens inside the application.
         </p>
 
@@ -418,7 +470,7 @@
             </h2>
 
             <p>
-                Recent observations from Sentinel's behavioral engine.
+                Recent observations from Vigilio's behavioral engine.
             </p>
 
         </div>
@@ -564,10 +616,25 @@
                     </h2>
 
                     <p>
-                        Sentinel compared the credential's current
+                        Vigilio compared the credential's current
                         lifecycle against its learned behavioral baseline.
                     </p>
+                    <div class="event-explanation">
 
+                        <span class="event-explanation-label">
+                        DETECTION LOGIC
+                        </span>
+
+                        <strong>
+                        Observed behavior is compared against the learned baseline.
+                        </strong>
+
+                        <span>
+                        If sensitive data remains active significantly longer than
+                        expected, VIGILIO flags the behavior for investigation.
+                        </span>
+
+                    </div>
                 </div>
 
             </div>
@@ -594,7 +661,16 @@
                         {{ result.category }}
                     </div>
 
+                    <div class="measurement-context">
 
+                        <span>WHY THIS MATTERS</span>
+
+                        <p>
+                        VIGILIO compares how long sensitive data remains active
+                        against the behavior it has learned as normal.
+                        </p>
+
+                    </div>
                     <div class="measurement">
 
                         <div>
@@ -662,7 +738,7 @@
                         {% if result.status == 'NORMAL' %}
 
                             Current behavior remains within the
-                            expected lifecycle learned by Sentinel.
+                            expected lifecycle learned by Vigilio.
 
                         {% else %}
 
@@ -711,11 +787,11 @@
             </div>
 
             <h2>
-                What Sentinel did.
+                What Vigilio did.
             </h2>
 
             <p>
-                Follow the credential from first access
+                VIGILIO follows the credential from first access
                 through detection, response, and verification.
             </p>
 
@@ -1049,9 +1125,10 @@
                         Explain the event.
                     </h2>
 
-                    <p>
-                        Turn security telemetry into an explanation
-                        a human can act on.
+                    <p class="analyst-intro">
+                        VIGILIO turns the detected behavior into a clear
+                        explanation of what happened, why it was flagged,
+                        and what action was taken.
                     </p>
 
                 </div>
@@ -1064,13 +1141,13 @@
                 <div class="analyst-header">
 
                     <div class="analyst-avatar">
-                        S
+                        V
                     </div>
 
                     <div>
 
                         <strong>
-                            Sentinel Analyst
+                            Vigilio Analyst
                         </strong>
 
                         <span>
@@ -1230,7 +1307,7 @@
             </h2>
 
             <p>
-                Sentinel translates the security event into
+                Vigilio translates the security event into
                 a clear operational response.
             </p>
 
@@ -1263,7 +1340,7 @@
             </h3>
 
             <p>
-                Sentinel detected behavior outside the
+                Vigilio detected behavior outside the
                 learned lifecycle for this credential.
             </p>
 
@@ -1417,7 +1494,7 @@
                     </h2>
 
                     <p>
-                        Sentinel creates a behavioral security loop
+                        Vigilio creates a behavioral security loop
                         around sensitive application data.
                     </p>
 
@@ -1524,7 +1601,7 @@
         <footer>
 
             <span>
-                SENTINEL
+                VIGILIO
             </span>
 
             Runtime behavioral security

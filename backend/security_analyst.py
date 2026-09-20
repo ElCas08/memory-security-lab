@@ -84,7 +84,7 @@ class SecurityAnalyst:
 
         return {
             "summary":
-                f"Sentinel detected abnormal "
+                f"Vigilio detected abnormal "
                 f"{category} retention.",
 
             "why_flagged":

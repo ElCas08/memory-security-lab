@@ -235,9 +235,9 @@ main {
 
     display: grid;
 
-    grid-template-columns: 1.35fr 0.65fr;
+    grid-template-columns: 1.15fr 0.85fr;
 
-    align-items: center;
+    align-items: start;
 
     gap: 80px;
 
@@ -2921,7 +2921,7 @@ body::after {
 }
 
 /* =========================================
-   SENTINEL SIMULATION — PREMIUM UI
+   VIGILIO SIMULATION — PREMIUM UI
 ========================================= */
 
 .simulation-overlay {
@@ -3687,7 +3687,7 @@ body::after {
 }
 
 /* =========================================
-   SENTINEL SECURITY LOOP
+   VIGILIO SECURITY LOOP
 ========================================= */
 
 .security-loop {
@@ -3832,4 +3832,300 @@ body::after {
         grid-template-columns: 1fr;
     }
 
+}
+
+/* =====================================================
+   VIGILIO SIMULATION — VIEWPORT FIX
+===================================================== */
+
+.simulation-overlay {
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 24px;
+}
+
+.simulation-window {
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+/* =====================================================
+   VIGILIO SIMULATION — STEP STATES
+===================================================== */
+
+.simulation-step {
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
+}
+
+.simulation-step.active {
+    transform: translateX(4px);
+    border-color: rgba(139, 92, 246, 0.45);
+    background: rgba(139, 92, 246, 0.06);
+}
+
+.simulation-step.active .step-number {
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.08);
+}
+
+.simulation-step.complete {
+    opacity: 0.82;
+}
+
+.simulation-step.complete .step-status {
+    color: #5ee6b0;
+}
+
+.simulation-progress-bar {
+    transition: width 0.65s ease;
+}
+
+/* =====================================================
+   VIGILIO HERO — CLARITY
+===================================================== */
+
+.hero-description {
+    max-width: 680px;
+    line-height: 1.75;
+}
+
+.hero-hint {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin-top: 18px;
+
+    font-size: 11px;
+    letter-spacing: 1.4px;
+    color: var(--muted-2);
+}
+
+.hero-hint-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #5ee6b0;
+
+    box-shadow:
+        0 0 0 4px rgba(94, 230, 176, 0.08),
+        0 0 12px rgba(94, 230, 176, 0.45);
+
+    animation: vigilioPulse 2s ease-in-out infinite;
+}
+
+@keyframes vigilioPulse {
+
+    0%,
+    100% {
+        opacity: 0.55;
+        transform: scale(0.9);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
+
+/* =====================================================
+   VIGILIO — DETECTION EXPLANATION
+===================================================== */
+
+.event-explanation {
+    margin-top: 24px;
+    padding: 18px 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    border-left: 2px solid rgba(139, 92, 246, 0.55);
+
+    background: rgba(139, 92, 246, 0.035);
+}
+
+.event-explanation-label {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: var(--muted-2);
+}
+
+.event-explanation strong {
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.event-explanation span:last-child {
+    max-width: 700px;
+
+    font-size: 11px;
+    line-height: 1.6;
+
+    color: var(--muted-2);
+}
+
+/* =====================================================
+   VIGILIO — MEASUREMENT CONTEXT
+===================================================== */
+
+.measurement-context {
+    margin: 20px 0 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.measurement-context span {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+
+    color: var(--muted-2);
+}
+
+.measurement-context p {
+    margin: 0;
+
+    max-width: 500px;
+
+    font-size: 13px;
+    line-height: 1.65;
+
+    color: var(--muted-2);
+}
+
+
+/* =====================================================
+   VIGILIO — LIFECYCLE INTRO
+===================================================== */
+
+.lifecycle-intro {
+    margin: 10px 0 0;
+    max-width: 650px;
+
+    font-size: 13px;
+    line-height: 1.65;
+
+    color: var(--muted-2);
+}
+
+
+/* =====================================================
+   VIGILIO — ANALYST INTRO
+===================================================== */
+
+.analyst-intro {
+    margin-top: 10px;
+    max-width: 650px;
+
+    font-size: 13px;
+    line-height: 1.65;
+
+    color: var(--muted-2);
+}
+
+/* =====================================================
+   VIGILIO — SIMULATION CONTROLS
+===================================================== */
+
+.simulation-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.simulation-form {
+    margin: 0;
+}
+
+.simulation-choice {
+    min-height: 48px;
+}
+
+.simulation-choice span {
+    font-size: 11px;
+    letter-spacing: 0.8px;
+}
+
+/* =====================================================
+   VIGILIO — HERO ACTION ALIGNMENT
+===================================================== */
+
+.hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.hero-actions > .simulation-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.hero-actions > .secondary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    white-space: nowrap;
+}
+
+.simulation-controls .simulation-choice {
+    min-height: 48px;
+}
+
+/* =====================================================
+   VIGILIO — SIMULATION NOTE
+===================================================== */
+
+.simulation-note {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    margin-top: 12px;
+
+    font-size: 11px;
+    line-height: 1.5;
+
+    color: var(--muted-2);
+}
+
+.simulation-note span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.simulation-note strong {
+    color: inherit;
+    font-weight: 500;
+}
+
+/* =====================================================
+   VIGILIO — HERO / CURRENT STATE ALIGNMENT
+===================================================== */
+
+.hero {
+    align-items: start;
+}
+
+.hero-state {
+    align-self: start;
+    margin-top: 150px;
 }

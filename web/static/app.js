@@ -1,25 +1,28 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const form = document.querySelector(
+    const forms = document.querySelectorAll(
         'form[action="/test"]'
     );
 
-    const button = document.querySelector(
-        '.primary-button[type="submit"]'
-    );
-
-    if (!form || !button) {
-        console.log("Sentinel: simulation form not found.");
+    if (!forms.length) {
+        console.log("Vigilio: simulation forms not found.");
         return;
     }
 
-    form.addEventListener("submit", (event) => {
+    forms.forEach((form) => {
 
-        event.preventDefault();
+        form.addEventListener("submit", (event) => {
 
-        console.log("Sentinel: simulation started.");
+            event.preventDefault();
 
-        startSecuritySimulation(form);
+            console.log(
+                "Vigilio: simulation started:",
+                form.querySelector('input[name="type"]')?.value
+            );
+
+            startSecuritySimulation(form);
+
+        });
 
     });
 
@@ -28,8 +31,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function startSecuritySimulation(form) {
 
-    const button = document.querySelector(
-        '.primary-button[type="submit"]'
+    const button = form.querySelector(
+        'button[type="submit"]'
     );
 
     if (button) {
@@ -57,22 +60,17 @@ function startSecuritySimulation(form) {
                 <div>
 
                     <span class="simulation-kicker">
-                        SENTINEL / RUNTIME ENGINE
+                        VIGILIO / RUNTIME ENGINE
                     </span>
 
                     <h3>
                         Security investigation
                     </h3>
 
-                    <p class="simulation-subtitle">
-                        Sentinel is observing the sensitive-data lifecycle
-                        in real time.
-                    </p>
-
                 </div>
 
                 <span class="simulation-live">
-                    ● LIVE
+                    LIVE
                 </span>
 
             </div>
@@ -84,14 +82,6 @@ function startSecuritySimulation(form) {
                     class="simulation-progress-bar"
                     id="simulationProgressBar"
                 ></div>
-
-            </div>
-
-
-            <div class="simulation-stage"
-                 id="simulationStage">
-
-                INITIALIZING SECURITY ENGINE
 
             </div>
 
@@ -131,7 +121,7 @@ function startSecuritySimulation(form) {
                 ${createStep(
                     "06",
                     "REMEDIATE",
-                    "Preparing security response"
+                    "Applying sensitive-data response"
                 )}
 
                 ${createStep(
@@ -164,104 +154,37 @@ function startSecuritySimulation(form) {
 
 
     const steps = [
-
-        {
-            message: "Credential access observed",
-            stage: "OBSERVING APPLICATION ACTIVITY"
-        },
-
-        {
-            message: "Behavioral baseline loaded",
-            stage: "LEARNING EXPECTED BEHAVIOR"
-        },
-
-        {
-            message: "Measuring credential retention",
-            stage: "MONITORING SENSITIVE DATA"
-        },
-
-        {
-            message: "Comparing current behavior with baseline",
-            stage: "ANALYZING BEHAVIOR"
-        },
-
-        {
-            message: "Risk classification complete",
-            stage: "EVALUATING SECURITY RISK"
-        },
-
-        {
-            message: "Security response prepared",
-            stage: "RESPONDING TO DETECTED RISK"
-        },
-
-        {
-            message: "Final security state verified",
-            stage: "VERIFYING REMEDIATION"
-        }
-
+        "Credential access observed",
+        "Baseline loaded",
+        "Retention measurement active",
+        "Behavioral comparison running",
+        "Risk classification complete",
+        "Remediation executed",
+        "Security state verified"
     ];
 
 
     const progressBar =
-        document.getElementById(
-            "simulationProgressBar"
+        overlay.querySelector(
+            "#simulationProgressBar"
         );
 
     const message =
-        document.getElementById(
-            "simulationMessage"
-        );
-
-    const stage =
-        document.getElementById(
-            "simulationStage"
+        overlay.querySelector(
+            "#simulationMessage"
         );
 
 
-    steps.forEach((item, index) => {
+    steps.forEach((text, index) => {
 
         setTimeout(() => {
 
             const stepNumber = index + 1;
 
             const step =
-                document.querySelector(
+                overlay.querySelector(
                     `.simulation-step[data-step="${stepNumber}"]`
                 );
-
-
-            /*
-             * Mark previous steps complete.
-             */
-
-            document
-                .querySelectorAll(".simulation-step")
-                .forEach((currentStep, currentIndex) => {
-
-                    if (currentIndex < index) {
-
-                        currentStep.classList.remove("active");
-
-                        currentStep.classList.add("complete");
-
-                        const status =
-                            currentStep.querySelector(
-                                ".step-status"
-                            );
-
-                        if (status) {
-                            status.textContent = "✓";
-                        }
-
-                    }
-
-                });
-
-
-            /*
-             * Activate current step.
-             */
 
             if (step) {
 
@@ -273,16 +196,29 @@ function startSecuritySimulation(form) {
                     );
 
                 if (description) {
-                    description.textContent =
-                        item.message;
+                    description.textContent = text;
                 }
+
+
+                setTimeout(() => {
+
+                    step.classList.remove("active");
+
+                    step.classList.add("complete");
+
+                    const status =
+                        step.querySelector(
+                            ".step-status"
+                        );
+
+                    if (status) {
+                        status.textContent = "✓";
+                    }
+
+                }, 650);
 
             }
 
-
-            /*
-             * Update progress.
-             */
 
             if (progressBar) {
 
@@ -292,98 +228,27 @@ function startSecuritySimulation(form) {
             }
 
 
-            /*
-             * Update main stage.
-             */
-
-            if (stage) {
-
-                stage.classList.remove(
-                    "stage-pulse"
-                );
-
-                void stage.offsetWidth;
-
-                stage.classList.add(
-                    "stage-pulse"
-                );
-
-                stage.textContent =
-                    item.stage;
-
-            }
-
-
-            /*
-             * Update footer message.
-             */
-
             if (message) {
 
-                message.textContent =
-                    item.message;
+                message.textContent = text;
 
             }
 
-        }, index * 950);
+        }, index * 900);
 
     });
 
 
     /*
-     * Complete the final step.
-     */
-
-    setTimeout(() => {
-
-        document
-            .querySelectorAll(".simulation-step")
-            .forEach((step) => {
-
-                step.classList.remove("active");
-
-                step.classList.add("complete");
-
-                const status =
-                    step.querySelector(
-                        ".step-status"
-                    );
-
-                if (status) {
-                    status.textContent = "✓";
-                }
-
-            });
-
-
-        if (stage) {
-
-            stage.textContent =
-                "SECURITY INVESTIGATION COMPLETE";
-
-        }
-
-
-        if (message) {
-
-            message.textContent =
-                "Redirecting to security results...";
-
-        }
-
-    }, steps.length * 950);
-
-
-    /*
-     * Submit to Flask after the visual
-     * investigation has completed.
+     * Let the visual investigation finish,
+     * then submit the specific Flask form.
      */
 
     setTimeout(() => {
 
         form.submit();
 
-    }, steps.length * 950 + 700);
+    }, steps.length * 900 + 500);
 
 }
 
@@ -394,7 +259,7 @@ function createStep(number, title, description) {
 
         <div
             class="simulation-step"
-            data-step="${parseInt(number, 10)}"
+            data-step="${number.replace("0", "")}"
         >
 
             <span class="step-number">
