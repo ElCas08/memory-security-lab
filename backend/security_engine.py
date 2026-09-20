@@ -69,6 +69,9 @@ def run_security_check(anomalous=True):
         "credential"
     )
 
+    if normal_idle is None:
+        normal_idle = 0
+
     return {
         "name": "api_key",
         "category": "credential",
